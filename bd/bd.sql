@@ -1,0 +1,64 @@
+--TABLA USUARIOS
+CREATE TABLE Ganaderia.usuarios (
+    id_usuario INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+    nombre VARCHAR(100) NOT NULL,
+    email VARCHAR(50) NOT NULL, 
+    password VARCHAR(245) NOT NULL
+);
+
+--TABLA GANADERO
+CREATE TABLE Ganaderia.ganaderos (
+    id_ganadero INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    psg VARCHAR(12) NOT NULL,
+    nombre VARCHAR(150) NOT NULL,
+    razonsocial VARCHAR(100) NOT NULL,
+    domicilio VARCHAR(150) NOT NULL,
+    localidad VARCHAR(100) NOT NULL,
+    municipio VARCHAR(100) NOT NULL,
+    estado VARCHAR(50) NOT NULL
+);
+
+--TABLA PUESTOS
+CREATE TABLE Puestos (
+    Id_puesto INT PRIMARY KEY,
+    Puesto VARCHAR(255)
+);
+
+--TABLA EMPLEADOS
+CREATE TABLE Empleados (
+    Id_empleado INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(255) NOT NULL,
+    Paterno VARCHAR(255) NOT NULL,
+    Materno VARCHAR(255) NOT NULL,
+    Id_puesto INT NOT NULL,
+    Salario DECIMAL(10, 2) NOT NULL,
+    Telefono VARCHAR(15) NOT NULL,
+    RFC VARCHAR(13) NOT NULL,
+    FOREIGN KEY (Id_puesto) REFERENCES Puestos(Id_puesto)
+);
+
+-----PROCEDIMIENTOS---
+--ELIMINAR EMPLEADO
+CREATE DEFINER=`root`@`%` PROCEDURE `DeleteEmpleado` (IN `p_IdEmpleado` INT) BEGIN DECLARE EXIT HANDLER FOR SQLEXCEPTION BEGIN ROLLBACK; END; START TRANSACTION; DELETE FROM Empleados WHERE Id_empleado = p_IdEmpleado; COMMIT; END;
+
+    DELIMITER $$
+
+    CREATE DEFINER=`root`@`%` PROCEDURE `DeleteEmpleadoConDireccion` (IN `p_IdEmpleado` INT)
+    BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+    END;
+
+    START TRANSACTION;
+    DELETE FROM Empleados WHERE Id_empleado = p_IdEmpleado;
+
+    COMMIT;
+    END$$
+
+    DELIMITER ;
+
+
+
+--TABLA
+
